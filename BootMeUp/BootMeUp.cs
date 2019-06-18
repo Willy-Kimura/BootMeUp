@@ -35,14 +35,14 @@ using WK.Libraries.BootMeUpNS.Models;
 namespace WK.Libraries.BootMeUpNS
 {
     /// <summary>
-    /// A library that enables automatic startups for .NET 
-    /// applications at boot-time while providing additional 
+    /// A library that provides automatic startup for .NET 
+    /// applications at system boot while providing additional 
     /// startup management options.
     /// </summary>
     [DefaultProperty("BootArea")]
     [Designer(typeof(WKDesigner))]
-    [Description("A library that enables automatic startups for .NET " +
-                 "applications at boot-time while providing additional " +
+    [Description("A .NET library that provides automatic startup for " +
+                 "applications at system boot while providing additional " +
                  "startup management options.")]
     public partial class BootMeUp : Component
     {
@@ -154,14 +154,14 @@ namespace WK.Libraries.BootMeUpNS
         }
 
         /// <summary>
-        /// Gets or sets the alternative booting area to 
-        /// use when the default booting area fails in 
+        /// Gets or sets the alternative booting area will 
+        /// be used when the default booting area fails in 
         /// registering the application.
         /// </summary>
         [Category("Booting Options")]
         [Description("When set to true, the alternative booting " +
                      "area will be used when the default booting " +
-                     "area fails to register the application.")]
+                     "area fails in registering the application.")]
         public bool UseAlternativeOnFail { get; set; } = true;
 
         /// <summary>
@@ -533,13 +533,59 @@ namespace WK.Libraries.BootMeUpNS
 
         /// <summary>
         /// Checks whether the application has a startup 
-        /// key that  varies with its current location in 
+        /// key that varies with its current location in 
         /// the System Registry as per the 
         /// <see cref="TargetUser"/> specified.
         /// </summary>
         public bool KeyVaries()
         {
             return KeyVaries(TargetUser);
+        }
+
+        /// <summary>
+        /// Checks whether the application has a startup 
+        /// key that varies with its current location in 
+        /// the System Registry.
+        /// </summary>
+        /// <param name="targetUser">
+        /// The target user to check.
+        /// </param>
+        public bool KeyVaries(TargetUsers targetUser)
+        {
+            try
+            {
+                RegistryKey key = null;
+
+                if (targetUser == TargetUsers.CurrentUser)
+                    key = Registry.CurrentUser.OpenSubKey(_subKey, true);
+                else if (targetUser == TargetUsers.AllUsers)
+                    Registry.LocalMachine.OpenSubKey(_subKey, true);
+
+                using (key)
+                {
+                    string name = GetAppName();
+                    string path = key.GetValue(name).ToString().ToLower();
+
+                    if (path.StartsWith("\"") & path.EndsWith("\""))
+                    {
+                        if (path != "\"" + GetAppPath() + "\"")
+                            return true;
+                        else
+                            return false;
+                    }
+                    else
+                    {
+                        if (path != GetAppPath())
+                            return true;
+                        else
+                            return false;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -578,52 +624,6 @@ namespace WK.Libraries.BootMeUpNS
                     else
                     {
                         if (path == GetAppPath())
-                            return true;
-                        else
-                            return false;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Checks whether the application has a startup 
-        /// key that varies with its current location in 
-        /// the System Registry.
-        /// </summary>
-        /// <param name="targetUser">
-        /// The user registry to check.
-        /// </param>
-        public bool KeyVaries(TargetUsers targetUser)
-        {
-            try
-            {
-                RegistryKey key = null;
-
-                if (targetUser == TargetUsers.CurrentUser)
-                    key = Registry.CurrentUser.OpenSubKey(_subKey, true);
-                else if (targetUser == TargetUsers.AllUsers)
-                    Registry.LocalMachine.OpenSubKey(_subKey, true);
-
-                using (key)
-                {
-                    string name = GetAppName();
-                    string path = key.GetValue(name).ToString().ToLower();
-
-                    if (path.StartsWith("\"") & path.EndsWith("\""))
-                    {
-                        if (path != "\"" + GetAppPath() + "\"")
-                            return true;
-                        else
-                            return false;
-                    }
-                    else
-                    {
-                        if (path != GetAppPath())
                             return true;
                         else
                             return false;

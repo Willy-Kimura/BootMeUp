@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("BootMeUp")]
-[assembly: AssemblyDescription("A library that enables automatic startups for .NET applications at boot-time while providing additional startup management options.")]
+[assembly: AssemblyDescription("A .NET library that enables automatic startups for applications at system boot while providing additional startup management options.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Willy Kimura")]
 [assembly: AssemblyProduct("BootMeUp")]

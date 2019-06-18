@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BootMeUp", "BootMeUp\BootMeUp.csproj", "{44AC46C4-4009-4A0D-807D-2DF4DC0C35D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BootMeUp.Tests", "BooteMeUp.Tests\BootMeUp.Tests.csproj", "{5AB3CAA0-E1D7-4D7B-A4F7-B7911693327B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BootMeUp.Tests", "BootMeUp.Tests\BootMeUp.Tests.csproj", "{5AB3CAA0-E1D7-4D7B-A4F7-B7911693327B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
