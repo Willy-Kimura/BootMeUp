@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BootMeUp")]
-[assembly: AssemblyDescription("A library that enables automatic startups for .NET applications at boot-time while providing additional startup management options.")]
+[assembly: AssemblyTitle("BootMeUp Tests")]
+[assembly: AssemblyDescription("A sample test application for 'BootMeUp' library.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Willy Kimura")]
-[assembly: AssemblyProduct("BootMeUp")]
+[assembly: AssemblyProduct("BootMeUp Tests")]
 [assembly: AssemblyCopyright("Copyright © 2019, Willy Kimura.")]
 [assembly: AssemblyTrademark("A product of Willy Kimura.")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("44ac46c4-4009-4a0d-807d-2df4dc0c35d9")]
+[assembly: Guid("5ab3caa0-e1d7-4d7b-a4f7-b7911693327b")]
 
 // Version information for an assembly consists of the following four values:
 //
