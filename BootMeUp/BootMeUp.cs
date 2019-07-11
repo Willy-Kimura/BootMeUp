@@ -193,7 +193,7 @@ namespace WK.Libraries.BootMeUpNS
         /// Gets or sets a list of options for use when 
         /// creating a shortcut in the 'Startup' folder.
         /// </summary>
-        [Category("Miscellaneous")]
+        [Category("Booting Options: Extras")]
         [Description("Provides a list of options for use when " +
                      "creating a shortcut in the 'Startup' folder.")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -204,7 +204,7 @@ namespace WK.Libraries.BootMeUpNS
         /// supplied data associated with the component.
         /// </summary>
         [Bindable(true)]
-        [Category("Miscellaneous")]
+        [Category("Booting Options: Extras")]
         [TypeConverter(typeof(StringConverter))]
         [Description("Sets the object that contains programmer-" +
                      "supplied data associated with the component.")]
@@ -726,8 +726,6 @@ namespace WK.Libraries.BootMeUpNS
 
         #region Private
 
-        #region Miscellaneous
-
         /// <summary>
         /// Applies the library-default settings.
         /// </summary>
@@ -804,8 +802,6 @@ namespace WK.Libraries.BootMeUpNS
                 }
             }
         }
-
-        #endregion
 
         #endregion
 

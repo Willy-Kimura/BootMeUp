@@ -19,19 +19,18 @@ namespace Tests
             else
                 MessageBox.Show($"Unsuccessful: {bootMeUp1.Exception.Message}");
 
-
-            // var bootMeUp = new BootMeUp();
-            // 
-            // bootMeUp.UseAlternativeOnFail = true;
-            // bootMeUp.BootArea = BootMeUp.BootAreas.Registry;
-            // bootMeUp.TargetUser = BootMeUp.TargetUsers.CurrentUser;
-            // 
-            // bootMeUp.Enabled = true;
-            // 
-            // if (bootMeUp.Successful)
-            //     MessageBox.Show("Success!");
-            // else
-            //     MessageBox.Show($"Unsuccessful: {bootMeUp.Exception.Message}");
+            var bootMeUp = new BootMeUp();
+            
+            bootMeUp.UseAlternativeOnFail = true;
+            bootMeUp.BootArea = BootMeUp.BootAreas.Registry;
+            bootMeUp.TargetUser = BootMeUp.TargetUsers.CurrentUser;
+            
+            bootMeUp.Enabled = true;
+            
+            if (bootMeUp.Successful)
+                MessageBox.Show("Success!");
+            else
+                MessageBox.Show($"Unsuccessful: {bootMeUp.Exception.Message}");
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -42,6 +41,11 @@ namespace Tests
         private void Button2_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void ChkEnableBooting_CheckedChanged(object sender, EventArgs e)
+        {
+            bootMeUp1.Enabled = chkEnableBooting.Checked;
         }
     }
 }
