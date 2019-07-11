@@ -233,7 +233,7 @@ namespace WK.Libraries.BootMeUpNS
         /// run with Administrative privileges.
         /// </summary>
         [Browsable(false)]
-        public bool AministrativeMode { get => AdminMode(); }
+        public bool AdministrativeMode { get => AdminMode(); }
 
         /// <summary>
         /// Checks whether the application has a 

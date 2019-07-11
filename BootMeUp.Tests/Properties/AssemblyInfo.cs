@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BootMeUp Tests")]
+[assembly: AssemblyTitle("BootMeUp.CSharp Tests")]
 [assembly: AssemblyDescription("A sample test application for 'BootMeUp' library.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Willy Kimura")]
-[assembly: AssemblyProduct("BootMeUp Tests")]
+[assembly: AssemblyProduct("BootMeUp.CSharp Tests")]
 [assembly: AssemblyCopyright("Copyright © 2019, Willy Kimura.")]
 [assembly: AssemblyTrademark("A product of Willy Kimura.")]
 [assembly: AssemblyCulture("")]
