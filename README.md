@@ -146,7 +146,6 @@ Here's an example explaining this scenario and how we can go about it:
 
 ```c#
 // C#
-// Check if the program was successfully set to boot...
 if (bootMeUp.Successful)
     // Success!
 else
@@ -172,7 +171,6 @@ else
 
 ```vb
 ' VB
-' Check If the program was successfully set to boot...
 If bootMeUp.Successful = True Then
     ' Success!
 Else
