@@ -5,9 +5,9 @@ using WK.Libraries.BootMeUpNS;
 
 namespace Tests
 {
-    public partial class MainWindow : Form
+    public partial class MainForm : Form
     {
-        public MainWindow()
+        public MainForm()
         {
             InitializeComponent();
         }
