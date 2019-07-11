@@ -22,7 +22,8 @@ Public Class MainForm
         If bootMeUp.Successful = True Then
             ' Inform user...
         Else
-            ' We will use the AdministrativeMode property
+
+            ' We will use the 'AdministrativeMode' property
             ' to check whether the program was launched
             ' with Admin privileges.
             If bootMeUp.AdministrativeMode = False Then
@@ -37,7 +38,9 @@ Public Class MainForm
                 ' Display an Exception message to the user.
                 ' You may also direct the user to a webpage to fix it.
                 MsgBox("There was an issue: \n" + bootMeUp.Exception.Message)
+
             End If
+
         End If
 
     End Sub

@@ -102,6 +102,16 @@ bootMeUp.TargetUser = BootMeUp.TargetUsers.CurrentUser
 bootMeUp.Enabled = True
 ```
 
+The `BootArea` property provides two options:
+
+1. The `Registry`, which means your application will be added to the *Registry* by default.
+2. The `StartupFolder`, which means your application will be added the Windows *Startup* Folder.
+
+The `TargetUser` property likewise provides two options:
+
+1. The `CurrentUser` option, meaning your application will be registered under the `HKEY_CURRENT_USER` registry domain.
+2. The `AllUsers` option, meaning your application will be registered under the `HKEY_LOCAL_MACHINE` registry domain.
+
 You can also check if the registration was successful using the property `Successful`:
 
 ```c#
@@ -114,14 +124,16 @@ else
 
 ```vb
 ' VB
-If bootMeUp.Successful = true Then
+If bootMeUp.Successful = True Then
     MsgBox("The program will launch on startup.")
 Else
     MsgBox("There was an issue. Please try launching as Admin.")
 End If
 ```
 
-Usually, whenever automatic startup fails to be registered correctly with the set defaults, the property `UseAlternativeOnFail` when set to `true` ensures that BootMeUp moves further by:
+Let's talk about the property `UseAlternativeOnFail`...
+
+Whenever automatic startup fails to be registered correctly while the property `UseAlternativeOnFail` is set to `true`, BootMeUp moves further by:
 
 1. Trying to register the application once again in the `AllUsers` registry domain if the `CurrentUser` is set as the default in the `TargetUser` property or vice-versa.
 2. Creating a shortcut for the application in the *Windows Startup* folder which is often most successful and acts as the last option to be executed if all else fails.
@@ -130,15 +142,16 @@ This ensures that your application is eventually set to launch on startup, great
 
 However, if all else really fails, you can be sure that the computer requires some serious privileges to complete this action. This therefore means that you can either inform the user to launch the program as an Administrator, or otherwise display an exception using the inbuilt `Exception` property. 
 
-Here are two examples explaining each scenario and how we can go about this:
+Here's an example explaining this scenario and how we can go about it:
 
 ```c#
-// C#: Check if the program was successfully set to boot...
+// C#
+// Check if the program was successfully set to boot...
 if (bootMeUp.Successful)
-    // Inform user...
+    // Success!
 else
 {
-    // We will use the AdministrativeMode property
+    // We will use the 'AdministrativeMode' property
     // to check whether the program was launched
     // with Admin privileges.
     if (bootMeUp.AdministrativeMode == false)
@@ -157,5 +170,36 @@ else
 }
 ```
 
+```vb
+' VB
+' Check If the program was successfully set to boot...
+If bootMeUp.Successful = True Then
+    ' Success!
+Else
 
+    ' We will use the 'AdministrativeMode' property
+    ' to check whether the program was launched
+    ' with Admin privileges.
+    If bootMeUp.AdministrativeMode = False Then
+
+        ' If the task requires one to run with Admin privileges,
+        ' direct the user to do so And complete the action.
+        MsgBox("Please try launching as Admin...")
+
+    Else
+
+        ' If true, then there's a serious issue.
+        ' Display an Exception message to the user.
+        ' You may also direct the user to a webpage to fix it.
+        MsgBox("There was an issue: \n" + bootMeUp.Exception.Message)
+        
+    End If
+
+End If
+```
+
+As shown, there are two properties at play here:
+
+- The property `AdministrativeMode` lets you check whether your application is currently being run with Administrative privileges.
+- The property `Exception` provides error information regarding the failed addition of the program either to the *Registry* or the Windows *Startup* Folder.
 

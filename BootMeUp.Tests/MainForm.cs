@@ -25,6 +25,7 @@ namespace Tests
             bootMeUp.BootArea = BootMeUp.BootAreas.Registry;
             bootMeUp.TargetUser = BootMeUp.TargetUsers.CurrentUser;
             
+
             bootMeUp.Enabled = true;
             
             if (bootMeUp.Successful)
