@@ -76,6 +76,7 @@ namespace WK.Libraries.BootMeUpNS
 
         #region Fields
 
+        private BootAreas _bootArea;
         private Exception _exception;
         private bool _enabled = false;
         private ContainerControl _containerControl = null;
@@ -140,7 +141,19 @@ namespace WK.Libraries.BootMeUpNS
                      "booting of the application is enabled.")]
         public bool Enabled
         {
-            get { return _enabled; }
+            get {
+
+                if (!KeyExists() || KeyVaries() ||
+                    !ShortcutExists() || ShortcutVaries())
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+
+            }
             set {
 
                 _enabled = value;
@@ -176,7 +189,17 @@ namespace WK.Libraries.BootMeUpNS
         [Category("Booting Options")]
         [Description("Sets the boot area where the application " +
                      "will be registered for startup/booting.")]
-        public BootAreas BootArea { get; set; } = BootAreas.Registry;
+        public BootAreas BootArea
+        {
+            get => _bootArea;
+            set {
+
+                _bootArea = value;
+
+                Run();
+
+            }
+        }
 
         /// <summary>
         /// Gets or sets the target user to be used when
@@ -229,13 +252,6 @@ namespace WK.Libraries.BootMeUpNS
         /// </summary>
         [Browsable(false)]
         public bool AdministrativeMode { get => AdminMode(); }
-
-        /// <summary>
-        /// Checks whether the application has an active 
-        /// shortcut link created in the Startup folder.
-        /// </summary>
-        [Browsable(false)]
-        public bool ShortcutExists { get => System.IO.File.Exists(ShortcutPath); }
 
         /// <summary>
         /// Gets the path to the application shortcut created 
@@ -653,7 +669,7 @@ namespace WK.Libraries.BootMeUpNS
         {
             try
             {
-                if (!ShortcutExists || ShortcutVaries())
+                if (!ShortcutExists() || ShortcutVaries())
                 {
                     string description = Application.ProductName;
 
@@ -710,6 +726,15 @@ namespace WK.Libraries.BootMeUpNS
 
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Checks whether the application has an active 
+        /// shortcut link created in the Startup folder.
+        /// </summary>
+        public bool ShortcutExists()
+        {
+            return System.IO.File.Exists(ShortcutPath);
         }
 
         /// <summary>

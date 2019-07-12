@@ -222,8 +222,6 @@ The above scenario will help cater for any issues that may be encountered in the
   >
   > This is especially important for those working with the Designer.
 
--   `ShortcutExists`: Checks whether the application has an active shortcut link created in the Windows *Startup* folder.
-
 - `ShortcutPath`: Gets the path to the application shortcut created either when the Registry fails or when the default `BootArea` is set to `BootAreas.StartupFolder`.
 
 - `ParentForm`: Gets or sets the component's parent form. This is mainly necessary when the component is used from the Designer.
@@ -241,6 +239,7 @@ The above scenario will help cater for any issues that may be encountered in the
 - `KeyVaries(TargetUsers targetUser)`: Checks whether the application has a startup key that varies with its current location in the System Registry as per the `targetUser` specified.
 - `CreateShortcut()`: Creates a shortcut for the application in the Windows *Startup* folder.
 - `DeleteShortcut()`: Deletes any shortcut created for the application in the Windows *Startup* folder.
+- `ShortcutExists()`: Checks whether the application has an active shortcut link created in the Windows *Startup* folder.
 - `ShortcutVaries()`: Determines whether the available application shortcut points to the current application's location.
 
 ### Any Extras?
