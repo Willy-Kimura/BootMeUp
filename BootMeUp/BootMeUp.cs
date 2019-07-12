@@ -21,6 +21,7 @@
 
 
 using System;
+using System.IO;
 using Microsoft.Win32;
 using System.Reflection;
 using System.Diagnostics;
@@ -29,8 +30,6 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using System.Security.Principal;
 using System.ComponentModel.Design;
-
-using WK.Libraries.BootMeUpNS.Models;
 
 namespace WK.Libraries.BootMeUpNS
 {
@@ -149,6 +148,11 @@ namespace WK.Libraries.BootMeUpNS
                 {
                     Run();
                 }
+                else
+                {
+                    if (RunWhenDebugging)
+                        Run();
+                }
 
             }
         }
@@ -190,21 +194,11 @@ namespace WK.Libraries.BootMeUpNS
         public TargetUsers TargetUser { get; set; } = TargetUsers.CurrentUser;
 
         /// <summary>
-        /// Gets or sets a list of options for use when 
-        /// creating a shortcut in the 'Startup' folder.
-        /// </summary>
-        [Category("Booting Options: Extras")]
-        [Description("Provides a list of options for use when " +
-                     "creating a shortcut in the 'Startup' folder.")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public ShortcutOptions ShortcutOptions { get; set; } = new ShortcutOptions();
-
-        /// <summary>
         /// Gets or sets the object that contains programmer-
         /// supplied data associated with the component.
         /// </summary>
         [Bindable(true)]
-        [Category("Booting Options: Extras")]
+        [Category("Data")]
         [TypeConverter(typeof(StringConverter))]
         [Description("Sets the object that contains programmer-" +
                      "supplied data associated with the component.")]
@@ -240,7 +234,7 @@ namespace WK.Libraries.BootMeUpNS
         /// shortcut link created in the Startup folder.
         /// </summary>
         [Browsable(false)]
-        public bool ShortcutExists { get => System.IO.File.Exists(ShortuctPath); }
+        public bool ShortcutExists { get => System.IO.File.Exists(ShortcutPath); }
 
         /// <summary>
         /// Gets the path to the application shortuct created 
@@ -249,7 +243,7 @@ namespace WK.Libraries.BootMeUpNS
         /// <see cref="BootAreas.StartupFolder"/>.
         /// </summary>
         [Browsable(false)]
-        public string ShortuctPath
+        public string ShortcutPath
         {
             get => $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}" +
                    $"\\{Application.ProductName}.lnk";
@@ -270,10 +264,17 @@ namespace WK.Libraries.BootMeUpNS
         {
             get {
 
-                if (ContainerControl is Form)
-                    return ((Form)ContainerControl);
-                else
-                    return ContainerControl.FindForm();
+                try
+                {
+                    if (ContainerControl is Form)
+                        return ((Form)ContainerControl);
+                    else
+                        return ContainerControl.FindForm();
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
 
             }
             set {
@@ -650,13 +651,10 @@ namespace WK.Libraries.BootMeUpNS
         {
             try
             {
-                string iconPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}" +
-                                  $"\\{GetAppName()}.ico";
-
                 string description = Application.ProductName;
 
                 WshShell shell = new WshShell();
-                IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(ShortuctPath);
+                IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(ShortcutPath);
 
                 Assembly asm = Assembly.GetEntryAssembly();
                 object[] attributes =
@@ -670,19 +668,11 @@ namespace WK.Libraries.BootMeUpNS
                     description = descriptionAttribute.Description;
                 }
 
-                shortcut.TargetPath = Application.ExecutablePath;
+                shortcut.WorkingDirectory = Path.GetDirectoryName(ShortcutPath);
+                shortcut.TargetPath = GetAppPath();
                 shortcut.Description = description;
-                shortcut.IconLocation = iconPath;
-
-                if (ShortcutOptions.Hotkey != Keys.None)
-                    shortcut.Hotkey = ShortcutOptions.Hotkey.ToString();
-
-                if (!string.IsNullOrEmpty(ShortcutOptions.Arguments))
-                    shortcut.Arguments = ShortcutOptions.Arguments;
 
                 shortcut.Save();
-
-                System.IO.File.Delete(iconPath);
 
                 Exception = null;
 
@@ -706,7 +696,7 @@ namespace WK.Libraries.BootMeUpNS
         {
             try
             {
-                System.IO.File.Delete(ShortuctPath);
+                System.IO.File.Delete(ShortcutPath);
 
                 Exception = null;
 

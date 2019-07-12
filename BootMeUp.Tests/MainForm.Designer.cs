@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblTitle = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lblOptions = new System.Windows.Forms.Label();
             this.grpLibrarySettings = new System.Windows.Forms.GroupBox();
             this.grpObservableFormats = new System.Windows.Forms.GroupBox();
@@ -41,17 +43,16 @@
             this.lblObservableTextsDesc = new System.Windows.Forms.Label();
             this.chkObserveTexts = new System.Windows.Forms.CheckBox();
             this.chkEnableBooting = new System.Windows.Forms.CheckBox();
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.bootMeUp1 = new WK.Libraries.BootMeUpNS.BootMeUp(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.bootMeUp1 = new WK.Libraries.BootMeUpNS.BootMeUp(this.components);
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.grpLibrarySettings.SuspendLayout();
             this.grpObservableFormats.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -68,6 +69,27 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(312, 379);
             this.panel1.TabIndex = 5;
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 15.75F);
+            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(56)))), ((int)(((byte)(64)))));
+            this.lblTitle.Location = new System.Drawing.Point(76, 13);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(112, 30);
+            this.lblTitle.TabIndex = 3;
+            this.lblTitle.Text = "BootMeUp";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(27, 9);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(45, 40);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 7;
+            this.pictureBox1.TabStop = false;
             // 
             // lblOptions
             // 
@@ -205,41 +227,6 @@
             this.chkEnableBooting.UseVisualStyleBackColor = true;
             this.chkEnableBooting.CheckedChanged += new System.EventHandler(this.ChkEnableBooting_CheckedChanged);
             // 
-            // lblTitle
-            // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 15.75F);
-            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(56)))), ((int)(((byte)(64)))));
-            this.lblTitle.Location = new System.Drawing.Point(76, 13);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(112, 30);
-            this.lblTitle.TabIndex = 3;
-            this.lblTitle.Text = "BootMeUp";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(27, 9);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(45, 40);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 7;
-            this.pictureBox1.TabStop = false;
-            // 
-            // bootMeUp1
-            // 
-            this.bootMeUp1.BootArea = WK.Libraries.BootMeUpNS.BootMeUp.BootAreas.Registry;
-            this.bootMeUp1.ContainerControl = this;
-            this.bootMeUp1.Enabled = true;
-            this.bootMeUp1.ParentForm = this;
-            this.bootMeUp1.RunWhenDebugging = false;
-            this.bootMeUp1.ShortcutOptions.Arguments = null;
-            this.bootMeUp1.ShortcutOptions.Hotkey = System.Windows.Forms.Keys.None;
-            this.bootMeUp1.Successful = false;
-            this.bootMeUp1.Tag = null;
-            this.bootMeUp1.TargetUser = WK.Libraries.BootMeUpNS.BootMeUp.TargetUsers.CurrentUser;
-            this.bootMeUp1.UseAlternativeOnFail = true;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -289,11 +276,34 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Booting options";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(379, 267);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // bootMeUp1
+            // 
+            this.bootMeUp1.BootArea = WK.Libraries.BootMeUpNS.BootMeUp.BootAreas.StartupFolder;
+            this.bootMeUp1.ContainerControl = this;
+            this.bootMeUp1.Enabled = true;
+            this.bootMeUp1.ParentForm = this;
+            this.bootMeUp1.RunWhenDebugging = false;
+            this.bootMeUp1.Successful = false;
+            this.bootMeUp1.Tag = null;
+            this.bootMeUp1.TargetUser = WK.Libraries.BootMeUpNS.BootMeUp.TargetUsers.CurrentUser;
+            this.bootMeUp1.UseAlternativeOnFail = true;
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(825, 379);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.label2);
@@ -304,10 +314,10 @@
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.grpLibrarySettings.ResumeLayout(false);
             this.grpObservableFormats.ResumeLayout(false);
             this.grpObservableFormats.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
@@ -335,6 +345,7 @@
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button button1;
     }
 }
 

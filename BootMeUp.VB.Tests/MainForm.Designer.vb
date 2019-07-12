@@ -33,8 +33,6 @@ Partial Class MainForm
         Me.BootMeUp1.Enabled = True
         Me.BootMeUp1.ParentForm = Me
         Me.BootMeUp1.RunWhenDebugging = False
-        Me.BootMeUp1.ShortcutOptions.Arguments = Nothing
-        Me.BootMeUp1.ShortcutOptions.Hotkey = System.Windows.Forms.Keys.None
         Me.BootMeUp1.Successful = False
         Me.BootMeUp1.Tag = Nothing
         Me.BootMeUp1.TargetUser = WK.Libraries.BootMeUpNS.BootMeUp.TargetUsers.CurrentUser

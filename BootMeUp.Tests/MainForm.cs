@@ -14,23 +14,32 @@ namespace Tests
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (bootMeUp1.Successful)
-                MessageBox.Show("Success!");
-            else
-                MessageBox.Show($"Unsuccessful: {bootMeUp1.Exception.Message}");
+            bootMeUp1.RunWhenDebugging = true;
+            bootMeUp1.Enabled = true;
 
-            var bootMeUp = new BootMeUp();
-            
-            bootMeUp.UseAlternativeOnFail = true;
-            bootMeUp.BootArea = BootMeUp.BootAreas.Registry;
-            bootMeUp.TargetUser = BootMeUp.TargetUsers.CurrentUser;
-            
-            bootMeUp.Enabled = true;
-            
-            if (bootMeUp.Successful)
+            if (bootMeUp1.Successful)
+            {
                 MessageBox.Show("Success!");
+            }
             else
-                MessageBox.Show($"Unsuccessful: {bootMeUp.Exception.Message}");
+            {
+                MessageBox.Show($"Failed: {bootMeUp1.Exception.Message}");
+            }
+
+            // var bootMeUp = new BootMeUp();
+            // 
+            // bootMeUp.UseAlternativeOnFail = true;
+            // bootMeUp.BootArea = BootMeUp.BootAreas.StartupFolder;
+            // bootMeUp.TargetUser = BootMeUp.TargetUsers.CurrentUser;
+            // 
+            // bootMeUp1.ShortcutOptions.Hotkey = Keys.Control & Keys.Alt & Keys.F2;
+            // 
+            // bootMeUp.Enabled = true;
+            // 
+            // if (bootMeUp.Successful)
+            //     MessageBox.Show("Success!");
+            // else
+            //     MessageBox.Show($"Unsuccessful: {bootMeUp.Exception.Message}");
         }
 
         private void MainWindow_Load(object sender, EventArgs e)

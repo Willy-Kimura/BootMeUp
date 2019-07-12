@@ -5,7 +5,7 @@
 
 ![bootmeup-logo](Assets/bootmeup-logo.png)
 
-# Installation
+# Installation 
 To install via the [NuGet Package Manager](https://www.nuget.org/packages/BootMeUp/) Console, run:
 
 > `Install-Package BootMeUp`
@@ -196,7 +196,7 @@ Else
 End If
 ```
 
-As shown, there are two properties at play here:
+As seen, there are two properties at play here:
 
 - The property `AdministrativeMode` lets you check whether your application is currently being run with Administrative privileges.
 - The property `Exception` provides error information regarding the failed addition of the program either to the *Registry* or the Windows *Startup* Folder.
