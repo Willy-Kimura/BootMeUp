@@ -201,3 +201,28 @@ As seen, there are two properties at play here:
 - The property `AdministrativeMode` lets you check whether your application is currently being run with Administrative privileges.
 - The property `Exception` provides error information regarding the failed addition of the program either to the *Registry* or the Windows *Startup* Folder.
 
+The above scenario will help cater for any issues that may be encountered in the process of registering your application for startup. However as indicated before, there are very less likely chances that this may occur as BootMeUp uses a *fail-retry* mode with all its present startup options to ensure that your application is registered to boot once Windows launches.
+
+#### Additional Properties and Methods
+
+##### Properties
+
+- `AdministrativeMode`: As discussed earlier, this property lets you check whether your application is currently being run with Administrative privileges.
+
+- `RunWhenDebugging`: Gets or sets a value indicating whether booting will be enabled or disabled when debugging. This means that when this property is enabled, your application will be registered for startup when debugging through Visual Studio. By default, always set it to `false` unless needed.
+-   `ShortcutExists`: Checks whether the application has an active shortcut link created in the Windows *Startup* folder.
+- `ShortcutPath`: Gets the path to the application shortcut created either when the Registry fails or when the default `BootArea` is set to `BootAreas.StartupFolder`.
+- `ParentForm`: Gets or sets the component's parent form. This is mainly necessary when the component is used from the Designer.
+- `Tag`: Use this property if you wish to add programmer-supplied data associated with the component.
+
+##### Methods
+
+- `Register()`: This method acts as an alternative to the `Enabled` property when set to `true`. It registers an application based on the user-provided settings.
+- `Register(TargetUsers targetUser)`: As a variant of the `Register()` method, this method allows you to specify the target user to register with while including other user-provided settings.
+- `Unregister()`: This method also acts as an alternative to the `Enabled` property when set to `false`. It unregisters an application based on the user-provided settings.
+- `KeyExists()`: Checks whether the application has a startup key created in the System Registry as per the default provided `TargetUser`.
+- `KeyExists(TargetUsers targetUser)`: Checks whether the application has a startup key created in the System Registry as per the `targetUser` specified.
+- `KeyVaries()`: Checks whether the application has a startup key that varies with its current location in the System Registry as per the default provided `TargetUser`.
+- `KeyVaries(TargetUsers targetUser)`: Checks whether the application has a startup key that varies with its current location in the System Registry as per the `targetUser` specified.
+- `CreateShortcut()`: Creates a shortcut for the application in the Windows *Startup* folder.
+- `DeleteShortcut()`: Deletes any shortcut created for the application in the Windows *Startup* folder.

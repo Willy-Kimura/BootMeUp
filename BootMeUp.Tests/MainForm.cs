@@ -7,54 +7,65 @@ namespace Tests
 {
     public partial class MainForm : Form
     {
+        #region Constructor
+
         public MainForm()
         {
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        #endregion
+
+        #region Methods
+
+        public void Reset()
         {
-            bootMeUp1.RunWhenDebugging = true;
-            bootMeUp1.Enabled = true;
-
-            if (bootMeUp1.Successful)
-            {
-                MessageBox.Show("Success!");
-            }
-            else
-            {
-                MessageBox.Show($"Failed: {bootMeUp1.Exception.Message}");
-            }
-
-            // var bootMeUp = new BootMeUp();
-            // 
-            // bootMeUp.UseAlternativeOnFail = true;
-            // bootMeUp.BootArea = BootMeUp.BootAreas.StartupFolder;
-            // bootMeUp.TargetUser = BootMeUp.TargetUsers.CurrentUser;
-            // 
-            // bootMeUp1.ShortcutOptions.Hotkey = Keys.Control & Keys.Alt & Keys.F2;
-            // 
-            // bootMeUp.Enabled = true;
-            // 
-            // if (bootMeUp.Successful)
-            //     MessageBox.Show("Success!");
-            // else
-            //     MessageBox.Show($"Unsuccessful: {bootMeUp.Exception.Message}");
+            if (bootMeUp1.Enabled)
+                bootMeUp1.Register();
         }
 
-        private void MainWindow_Load(object sender, EventArgs e)
-        {
-            
-        }
+        #endregion
 
-        private void Button2_Click(object sender, EventArgs e)
-        {
-            
-        }
+        #region Events
 
         private void ChkEnableBooting_CheckedChanged(object sender, EventArgs e)
         {
+            bootMeUp1.RunWhenDebugging = true;
             bootMeUp1.Enabled = chkEnableBooting.Checked;
+
+            if (bootMeUp1.Successful)
+                MessageBox.Show("Success!");
+            else
+                MessageBox.Show($"Failed: {bootMeUp1.Exception.Message}");
         }
+
+        private void ChkUseAlternativeOnFail_CheckedChanged(object sender, EventArgs e)
+        {
+            bootMeUp1.UseAlternativeOnFail = chkUseAlternativeOnFail.Checked;
+
+            Reset();
+        }
+
+        private void CboBootAreas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cboBootAreas.SelectedIndex == 0)
+                bootMeUp1.BootArea = BootMeUp.BootAreas.Registry;
+            else if (cboBootAreas.SelectedIndex == 1)
+                bootMeUp1.BootArea = BootMeUp.BootAreas.StartupFolder;
+
+            Reset();
+        }
+
+        private void CboTargetUsers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cboTargetUsers.SelectedIndex == 0)
+                bootMeUp1.TargetUser = BootMeUp.TargetUsers.CurrentUser;
+            else if (cboBootAreas.SelectedIndex == 1)
+                bootMeUp1.TargetUser = BootMeUp.TargetUsers.AllUsers;
+
+            Reset();
+        }
+
+        #endregion
     }
 }

@@ -76,10 +76,11 @@ namespace WK.Libraries.BootMeUpNS
 
         #region Fields
 
+        private Exception _exception;
         private bool _enableBooting = true;
         private ContainerControl _containerControl = null;
         private const string _subKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
-        
+
         #endregion
 
         #region Enumerations
@@ -230,14 +231,14 @@ namespace WK.Libraries.BootMeUpNS
         public bool AdministrativeMode { get => AdminMode(); }
 
         /// <summary>
-        /// Checks whether the application has a 
+        /// Checks whether the application has an active 
         /// shortcut link created in the Startup folder.
         /// </summary>
         [Browsable(false)]
         public bool ShortcutExists { get => System.IO.File.Exists(ShortcutPath); }
 
         /// <summary>
-        /// Gets the path to the application shortuct created 
+        /// Gets the path to the application shortcut created 
         /// either when the Registry fails or when the default 
         /// <see cref="BootArea"/> is set to 
         /// <see cref="BootAreas.StartupFolder"/>.
@@ -254,7 +255,25 @@ namespace WK.Libraries.BootMeUpNS
         /// application's boot registering or unregistering process.
         /// </summary>
         [Browsable(false)]
-        public Exception Exception { get; private set; }
+        public Exception Exception
+        {
+            get {
+
+                if (_exception == null)
+                {
+                    if (RunWhenDebugging == false)
+                    {
+                        _exception = new Exception("(Developer Mode) Please enable 'RunWhenDebugging' " +
+                                                   "to allow registering the application when running " +
+                                                   "it from Visual Studio.");
+                    }
+                }
+
+                return _exception;
+
+            }
+            set => _exception = value;
+        }
 
         /// <summary>
         /// Gets or sets the parent form.
@@ -460,16 +479,19 @@ namespace WK.Libraries.BootMeUpNS
         {
             try
             {
-                RegistryKey key = null;
-
-                if (targetUser == TargetUsers.CurrentUser)
-                    key = Registry.CurrentUser.OpenSubKey(_subKey, true);
-                else if (targetUser == TargetUsers.AllUsers)
-                    key = Registry.LocalMachine.OpenSubKey(_subKey, true);
-
-                using (key)
+                if (!KeyExists() || KeyVaries())
                 {
-                    key.SetValue(GetAppName(), "\"" + GetAppPath() + "\"");
+                    RegistryKey key = null;
+
+                    if (targetUser == TargetUsers.CurrentUser)
+                        key = Registry.CurrentUser.OpenSubKey(_subKey, true);
+                    else if (targetUser == TargetUsers.AllUsers)
+                        key = Registry.LocalMachine.OpenSubKey(_subKey, true);
+
+                    using (key)
+                    {
+                        key.SetValue(GetAppName(), "\"" + GetAppPath() + "\"");
+                    }
                 }
 
                 Exception = null;
@@ -501,7 +523,7 @@ namespace WK.Libraries.BootMeUpNS
                     key = Registry.CurrentUser.OpenSubKey(_subKey, true);
                 else if (targetUser == TargetUsers.AllUsers)
                     key = Registry.LocalMachine.OpenSubKey(_subKey, true);
-
+                
                 if (KeyExists(targetUser))
                 {
                     using (key)
@@ -555,6 +577,9 @@ namespace WK.Libraries.BootMeUpNS
         {
             try
             {
+                string path = string.Empty;
+                string name = GetAppName();
+
                 RegistryKey key = null;
 
                 if (targetUser == TargetUsers.CurrentUser)
@@ -564,23 +589,13 @@ namespace WK.Libraries.BootMeUpNS
 
                 using (key)
                 {
-                    string name = GetAppName();
-                    string path = key.GetValue(name).ToString().ToLower();
+                    if (key.GetValue(name) != null)
+                        path = key.GetValue(name).ToString().ToLower().Replace("\"", "");
 
-                    if (path.StartsWith("\"") & path.EndsWith("\""))
-                    {
-                        if (path != "\"" + GetAppPath() + "\"")
-                            return true;
-                        else
-                            return false;
-                    }
+                    if (path != GetAppPath().ToLower())
+                        return true;
                     else
-                    {
-                        if (path != GetAppPath())
-                            return true;
-                        else
-                            return false;
-                    }
+                        return false;
                 }
             }
             catch (Exception)
@@ -612,23 +627,13 @@ namespace WK.Libraries.BootMeUpNS
 
                 using (key)
                 {
-                    if (key.GetValue(Application.ProductName) != null)
-                        path = key.GetValue(name).ToString().ToLower();
+                    if (key.GetValue(name) != null)
+                        path = key.GetValue(name).ToString().ToLower().Replace("\"", "");
 
-                    if (path.StartsWith("\"") & path.EndsWith("\""))
-                    {
-                        if (path == "\"" + GetAppPath() + "\"")
-                            return true;
-                        else
-                            return false;
-                    }
+                    if (path == GetAppPath().ToLower())
+                        return true;
                     else
-                    {
-                        if (path == GetAppPath())
-                            return true;
-                        else
-                            return false;
-                    }
+                        return false;
                 }
             }
             catch (Exception)
@@ -644,9 +649,6 @@ namespace WK.Libraries.BootMeUpNS
         /// <summary>
         /// Creates a shortcut for the application.
         /// </summary>
-        /// <param name="user">
-        /// The user-type target folder.
-        /// </param>
         public bool CreateShortcut()
         {
             try
@@ -689,9 +691,6 @@ namespace WK.Libraries.BootMeUpNS
         /// <summary>
         /// Deletes any shortcut created for the application.
         /// </summary>
-        /// <param name="user">
-        /// The user-type target folder.
-        /// </param>
         public bool DeleteShortcut()
         {
             try
@@ -818,7 +817,7 @@ namespace WK.Libraries.BootMeUpNS
         #region Constructor
 
         /// <summary>
-        /// Provides <see cref="FontsInstaller"/> design-time features.
+        /// Provides <see cref="BootMeUp"/> design-time features.
         /// </summary>
         [DebuggerStepThrough]
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -828,11 +827,10 @@ namespace WK.Libraries.BootMeUpNS
             private DesignerActionListCollection actionLists;
 
             /// <summary>
-            /// Provides <see cref="FontsInstaller"/> design-time features.
+            /// Provides <see cref="BootMeUp"/> design-time features.
             /// </summary>
             WKDesigner() { }
 
-            // Use pull model to populate smart tag menu.
             public override DesignerActionListCollection ActionLists
             {
                 get {
