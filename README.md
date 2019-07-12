@@ -6,6 +6,7 @@
 ![bootmeup-logo](Assets/bootmeup-logo.png)
 
 # Installation 
+
 To install via the [NuGet Package Manager](https://www.nuget.org/packages/BootMeUp/) Console, run:
 
 > `Install-Package BootMeUp`
@@ -88,6 +89,9 @@ bootMeUp.TargetUser = BootMeUp.TargetUsers.CurrentUser;
 
 // Enable auto-booting.
 bootMeUp.Enabled = true;
+
+// Or better yet, use a CheckBox.
+bootMeUp.Enabled = chkEnabled.Checked;
 ```
 
 ```vb
@@ -100,6 +104,9 @@ bootMeUp.TargetUser = BootMeUp.TargetUsers.CurrentUser
 
 ' Enable auto-booting.
 bootMeUp.Enabled = True
+
+' Or better yet, use a CheckBox.
+bootMeUp.Enabled = ChkEnabled.Checked
 ```
 
 The `BootArea` property provides two options:
@@ -209,10 +216,18 @@ The above scenario will help cater for any issues that may be encountered in the
 
 - `AdministrativeMode`: As discussed earlier, this property lets you check whether your application is currently being run with Administrative privileges.
 
-- `RunWhenDebugging`: Gets or sets a value indicating whether booting will be enabled or disabled when debugging. This means that when this property is enabled, your application will be registered for startup when debugging through Visual Studio. By default, always set it to `false` unless needed.
+- `RunWhenDebugging`: Gets or sets a value indicating whether booting will be enabled or disabled when debugging. This means that when this property is enabled, your application will be registered for startup in your development machine when debugging from Visual Studio. By default, always set it to `false` unless needed.
+
+  > Please note that since this property is set to `false` by default, your application won't be enabled or disabled from booting when run in Visual Studio; however, setting it to `true` means that you can enable or disable booting when running in Visual Studio. The recommended option is to run the application independently if you'd prefer to test the booting feature out.
+  >
+  > This is especially important for those working with the Designer.
+
 -   `ShortcutExists`: Checks whether the application has an active shortcut link created in the Windows *Startup* folder.
+
 - `ShortcutPath`: Gets the path to the application shortcut created either when the Registry fails or when the default `BootArea` is set to `BootAreas.StartupFolder`.
+
 - `ParentForm`: Gets or sets the component's parent form. This is mainly necessary when the component is used from the Designer.
+
 - `Tag`: Use this property if you wish to add programmer-supplied data associated with the component.
 
 ##### Methods
@@ -226,3 +241,13 @@ The above scenario will help cater for any issues that may be encountered in the
 - `KeyVaries(TargetUsers targetUser)`: Checks whether the application has a startup key that varies with its current location in the System Registry as per the `targetUser` specified.
 - `CreateShortcut()`: Creates a shortcut for the application in the Windows *Startup* folder.
 - `DeleteShortcut()`: Deletes any shortcut created for the application in the Windows *Startup* folder.
+
+### Any Extras?
+
+The sample C# project can help you get started. You can easily interact with the library's settings to see how it works:
+
+![bootmeup-options](Assets/bootmeup-options.png)
+
+Have fun!
+
+*Made with* 😊 *by* [*Willy Kimura*]([https://github.com/Willy-Kimura)

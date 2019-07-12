@@ -77,7 +77,7 @@ namespace WK.Libraries.BootMeUpNS
         #region Fields
 
         private Exception _exception;
-        private bool _enableBooting = true;
+        private bool _enabled = false;
         private ContainerControl _containerControl = null;
         private const string _subKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
 
@@ -140,10 +140,10 @@ namespace WK.Libraries.BootMeUpNS
                      "booting of the application is enabled.")]
         public bool Enabled
         {
-            get { return _enableBooting; }
+            get { return _enabled; }
             set {
 
-                _enableBooting = value;
+                _enabled = value;
 
                 if (ParentForm == null)
                 {
