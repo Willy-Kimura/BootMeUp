@@ -61,7 +61,28 @@ bootMeUp1.Enabled = chkEnableNotes.Checked;
 BootMeUp1.Enabled = ChkEnableNotes.Checked
 ```
 
-And that's all! To read more on the various properties implemented, head over to the next section.
+To check whether the application is currently set to run on Windows startup, simply use the same `Enabled` property:
+
+```c#
+// C#: Check whether my Notes software is set to auto-start.
+if (bootMeUp1.Enabled == true)
+    // Do something.
+else
+    // Do something else...
+```
+
+```vb
+' VB: Check whether my Notes software is set to auto-start.
+If BootMeUp1.Enabled = True Then
+    ' Do something...
+Else
+    ' Do something else.
+End If
+```
+
+By default, the `Enabled` property acts as a setting that checks for you from the available booting areas whether your application has been enabled to boot on Windows startup or not - so no need to have an external setting for this feature.
+
+And that's really it for the basics! To read more on the features available, head over to the next section: *Working Programmatically*.
 
 ### Working Programmatically
 

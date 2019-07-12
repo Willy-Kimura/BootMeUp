@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnAbout = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lblOptions = new System.Windows.Forms.Label();
@@ -46,6 +47,7 @@
             this.chkUseAlternativeOnFail = new System.Windows.Forms.CheckBox();
             this.lblObservableTextsDesc = new System.Windows.Forms.Label();
             this.chkEnableBooting = new System.Windows.Forms.CheckBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.bootMeUp1 = new WK.Libraries.BootMeUpNS.BootMeUp(this.components);
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -59,6 +61,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.btnAbout);
             this.panel1.Controls.Add(this.lblTitle);
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Controls.Add(this.lblOptions);
@@ -67,6 +70,17 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(340, 501);
             this.panel1.TabIndex = 5;
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Location = new System.Drawing.Point(302, 5);
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Size = new System.Drawing.Size(32, 31);
+            this.btnAbout.TabIndex = 8;
+            this.btnAbout.Text = "?";
+            this.toolTip1.SetToolTip(this.btnAbout, "About BootMeUp");
+            this.btnAbout.UseVisualStyleBackColor = true;
+            this.btnAbout.Click += new System.EventHandler(this.BtnAbout_Click);
             // 
             // lblTitle
             // 
@@ -275,7 +289,6 @@
             this.bootMeUp1.Exception = ((System.Exception)(resources.GetObject("bootMeUp1.Exception")));
             this.bootMeUp1.ParentForm = this;
             this.bootMeUp1.RunWhenDebugging = false;
-            this.bootMeUp1.Successful = false;
             this.bootMeUp1.Tag = null;
             this.bootMeUp1.TargetUser = WK.Libraries.BootMeUpNS.BootMeUp.TargetUsers.CurrentUser;
             this.bootMeUp1.UseAlternativeOnFail = false;
@@ -289,6 +302,7 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BootMeUp: Tests";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -317,6 +331,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnAbout;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 

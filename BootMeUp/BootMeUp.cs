@@ -80,6 +80,7 @@ namespace WK.Libraries.BootMeUpNS
         private Exception _exception;
         private bool _enabled = false;
         private ContainerControl _containerControl = null;
+        private bool _successful;
         private const string _subKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
 
         #endregion
@@ -143,16 +144,20 @@ namespace WK.Libraries.BootMeUpNS
         {
             get {
 
-                if (!KeyExists() || KeyVaries() ||
-                    !ShortcutExists() || ShortcutVaries())
+                _enabled = false;
+
+                if (BootArea == BootAreas.Registry)
                 {
-                    return false;
+                    if (KeyExists() && !KeyVaries())
+                        _enabled = true;
                 }
-                else
+                else if (BootArea == BootAreas.StartupFolder)
                 {
-                    return true;
+                    if (ShortcutExists() && !ShortcutVaries())
+                        _enabled = true;
                 }
 
+                return _enabled;
             }
             set {
 
@@ -189,17 +194,7 @@ namespace WK.Libraries.BootMeUpNS
         [Category("Booting Options")]
         [Description("Sets the boot area where the application " +
                      "will be registered for startup/booting.")]
-        public BootAreas BootArea
-        {
-            get => _bootArea;
-            set {
-
-                _bootArea = value;
-
-                Run();
-
-            }
-        }
+        public BootAreas BootArea { get; set; } = BootAreas.Registry;
 
         /// <summary>
         /// Gets or sets the target user to be used when
@@ -233,11 +228,46 @@ namespace WK.Libraries.BootMeUpNS
         #region Non-browsable
 
         /// <summary>
-        /// Gets or sets a value indicating whether booting 
+        /// This determines whether automatic booting 
+        /// of the application is enabled in any of the 
+        /// supported booting areas within the system.
+        /// </summary>
+        [Browsable(false)]
+        public bool IsEnabledFromAnywhere
+        {
+            get {
+
+                bool enabled = false;
+
+                if (KeyExists(TargetUsers.CurrentUser) && 
+                    !KeyVaries(TargetUsers.CurrentUser))
+                {
+                    enabled = true;
+                }
+                
+                if (AdministrativeMode)
+                {
+                    if (KeyExists(TargetUsers.AllUsers) &&
+                        !KeyVaries(TargetUsers.AllUsers))
+                    {
+                        enabled = true;
+                    }
+                }
+                
+                if (ShortcutExists() && !ShortcutVaries())
+                    enabled = true;
+
+                return enabled;
+
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether booting 
         /// for the application was enabled or disabled successfully.
         /// </summary>
         [Browsable(false)]
-        public bool Successful { get; set; }
+        public bool Successful { get; private set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether booting 
@@ -480,6 +510,8 @@ namespace WK.Libraries.BootMeUpNS
                 if (UseAlternativeOnFail)
                     Unregister(TargetUser);
             }
+
+            Successful = success;
 
             return success;
         }
@@ -744,11 +776,29 @@ namespace WK.Libraries.BootMeUpNS
         /// <returns></returns>
         public bool ShortcutVaries()
         {
-            if (GetShortcutTarget() != GetAppPath())
-                return true;
+            if (ShortcutExists())
+            {
+                if (GetShortcutTarget() != GetAppPath())
+                    return true;
+                else
+                    return false;
+            }
             else
+            {
                 return false;
+            }
+        }
 
+        #endregion
+
+        #region Miscellaneous
+
+        /// <summary>
+        /// Re-applies the current settings.
+        /// </summary>
+        public void Refresh()
+        {
+            Run();
         }
 
         #endregion
@@ -894,17 +944,18 @@ namespace WK.Libraries.BootMeUpNS
         /// Parses and applies the user-provided 
         /// booting options for the application.
         /// </summary>
-        private void Run()
+        private void Run(bool loading = false)
         {
             if (!DesignMode || RunWhenDebugging)
             {
-                if (Enabled)
+                if (_enabled)
                 {
                     Register();
                 }
                 else
                 {
-                    Unregister();
+                    if (!loading)
+                        Unregister();
                 }
             }
         }
@@ -921,7 +972,7 @@ namespace WK.Libraries.BootMeUpNS
         {
             if (ParentForm != null)
             {
-                Run();
+                Run(true);
             }
         }
 

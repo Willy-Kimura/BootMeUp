@@ -16,6 +16,12 @@ namespace Tests
 
         #endregion
 
+        #region Fields
+
+        private bool _loaded = false;
+
+        #endregion
+
         #region Methods
 
         public void Reset()
@@ -28,15 +34,32 @@ namespace Tests
 
         #region Events
 
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            chkEnableBooting.Checked = bootMeUp1.Enabled;
+
+            _loaded = true;
+        }
+
         private void ChkEnableBooting_CheckedChanged(object sender, EventArgs e)
         {
-            bootMeUp1.RunWhenDebugging = true;
-            bootMeUp1.Enabled = chkEnableBooting.Checked;
-
-            if (bootMeUp1.Successful)
-                MessageBox.Show("Success!");
-            else
-                MessageBox.Show($"Failed: {bootMeUp1.Exception.Message}");
+            if (_loaded)
+            {
+                bootMeUp1.RunWhenDebugging = true;
+                bootMeUp1.Enabled = chkEnableBooting.Checked;
+                
+                if (bootMeUp1.Successful)
+                {
+                    if (_loaded)
+                        MessageBox.Show("Success!");
+                }
+                else
+                {
+                    if (_loaded)
+                        MessageBox.Show($"Something happened:\n " +
+                                        $"{bootMeUp1.Exception.Message}");
+                }
+            }
         }
 
         private void ChkUseAlternativeOnFail_CheckedChanged(object sender, EventArgs e)
@@ -64,6 +87,15 @@ namespace Tests
                 bootMeUp1.TargetUser = BootMeUp.TargetUsers.AllUsers;
 
             Reset();
+        }
+
+        private void BtnAbout_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("BootMeUp is a .NET library that enables automatic startups for " +
+                            "applications at system boot-time while providing additional " +
+                            "startup management options.\n\n" +
+                            "License: MIT \n\n" +
+                            "Copyright © 2019, Willy Kimura.", "About BootMeUp", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         #endregion
