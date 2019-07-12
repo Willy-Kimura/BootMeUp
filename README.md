@@ -17,8 +17,8 @@ Here's a comprehensive list of the features available:
 - Built as a component making it accessible in Design Mode.
 - Supports [.NET Framework 4.0](https://www.microsoft.com/en-us/download/details.aspx?id=17718) and higher.
 - Provides support for the major Windows application startup areas: the *Registry* and the *Startup Folder*.
-- Provides the ability to create application shortcuts, including *arguments* and *hotkey* setup.
-- Registering and unregistering your applications from the startup areas has been made seamless.
+- Auto-checks whether the application was moved from its original location and updates the registry or shortcut existing appropriately.
+- Registering/unregistering your applications from the supported startup areas has been made seamless.
 - Provides the ability to register your applications in the *current user* (default) domain or *all users* domain (requires Administrative privileges).
 - Uses the alternative method for registering your application if the default fails, giving you 100% confidence when deploying your applications when automatic startup is enabled.
 - Includes additional properties and methods to help you manage application startups.
@@ -241,6 +241,7 @@ The above scenario will help cater for any issues that may be encountered in the
 - `KeyVaries(TargetUsers targetUser)`: Checks whether the application has a startup key that varies with its current location in the System Registry as per the `targetUser` specified.
 - `CreateShortcut()`: Creates a shortcut for the application in the Windows *Startup* folder.
 - `DeleteShortcut()`: Deletes any shortcut created for the application in the Windows *Startup* folder.
+- `ShortcutVaries()`: Determines whether the available application shortcut points to the current application's location.
 
 ### Any Extras?
 
