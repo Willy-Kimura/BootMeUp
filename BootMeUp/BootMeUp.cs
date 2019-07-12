@@ -35,14 +35,14 @@ namespace WK.Libraries.BootMeUpNS
 {
     /// <summary>
     /// A library that provides automatic startup for .NET 
-    /// applications at system boot while providing additional 
-    /// startup management options.
+    /// applications at system boot-time while providing 
+    /// additional startup management options.
     /// </summary>
     [DefaultProperty("BootArea")]
     [Designer(typeof(WKDesigner))]
     [Description("A .NET library that provides automatic startup for " +
-                 "applications at system boot while providing additional " +
-                 "startup management options.")]
+                 "applications at system boot-time while providing " +
+                 "additional startup management options.")]
     public partial class BootMeUp : Component
     {
         #region Constructor
