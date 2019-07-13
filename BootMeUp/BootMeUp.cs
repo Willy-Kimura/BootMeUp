@@ -157,6 +157,9 @@ namespace WK.Libraries.BootMeUpNS
                         _enabled = true;
                 }
 
+                if (ShortcutExists() && !ShortcutVaries())
+                    _enabled = true;
+
                 return _enabled;
             }
             set {
@@ -497,10 +500,9 @@ namespace WK.Libraries.BootMeUpNS
                 if (UseAlternativeOnFail)
                 {
                     if (TargetUser == TargetUsers.AllUsers)
-                    {
                         Unregister(TargetUsers.CurrentUser);
-                        DeleteShortcut();
-                    }
+
+                    DeleteShortcut();
                 }
             }
             else if (BootArea == BootAreas.StartupFolder)
@@ -746,7 +748,8 @@ namespace WK.Libraries.BootMeUpNS
         {
             try
             {
-                System.IO.File.Delete(ShortcutPath);
+                if (ShortcutExists())
+                    System.IO.File.Delete(ShortcutPath);
 
                 Exception = null;
 

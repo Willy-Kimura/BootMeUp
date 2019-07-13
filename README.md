@@ -74,7 +74,7 @@ else
 ```vb
 ' VB: Check whether my Notes software is set to auto-start.
 If BootMeUp1.Enabled = True Then
-    ' Do something...
+    ' Do something.
 Else
     ' Do something else.
 End If
