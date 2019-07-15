@@ -253,10 +253,19 @@ namespace WK.Libraries.BootMeUpNS
                     {
                         enabled = true;
                     }
+
+                    if (ShortcutExists(TargetUsers.AllUsers) && 
+                        !ShortcutVaries(TargetUsers.AllUsers))
+                    {
+                        enabled = true;
+                    }
                 }
                 
-                if (ShortcutExists() && !ShortcutVaries())
+                if (ShortcutExists(TargetUsers.CurrentUser) && 
+                    !ShortcutVaries(TargetUsers.CurrentUser))
+                {
                     enabled = true;
+                }
 
                 return enabled;
 
