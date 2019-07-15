@@ -82,6 +82,8 @@ End If
 
 By default, the `Enabled` property acts as a setting that checks for you from the available booting areas whether your application has been enabled to boot on Windows startup or not - so no need to have an external setting for this feature.
 
+>  Please note that the recommended `TargetUser` to set is the `CurrentUser` option, both when working with the Registry and Windows *Startup* folder. This is because your application **won't** require any Administrative privileges for the boot setting to be applied in the user's computer. Likewise, this is how the many applications we know and love register for automatic booting. However, if you really need to set it to all users, then simply set the `TargetUser` property to `AllUsers` and make sure you inform users to run as an Administrator when applying your application for automatic booting.
+
 And that's really it for the basics! To read more on the features available, head over to the next section: *Working Programmatically*.
 
 ### Working Programmatically
@@ -178,10 +180,10 @@ if (bootMeUp.Successful)
     // Success!
 else
 {
-    // We will use the 'AdministrativeMode' property
+    // We will use the 'AdminMode' property
     // to check whether the program was launched
-    // with Admin privileges.
-    if (bootMeUp.AdministrativeMode == false)
+    // with Administrative privileges.
+    if (bootMeUp.AdminMode == false)
     {
         // If the task requires one to run with Admin privileges,
         // direct the user to do so and complete the action.
@@ -203,10 +205,10 @@ If bootMeUp.Successful = True Then
     ' Success!
 Else
 
-    ' We will use the 'AdministrativeMode' property
+    ' We will use the 'AdminMode' property
     ' to check whether the program was launched
-    ' with Admin privileges.
-    If bootMeUp.AdministrativeMode = False Then
+    ' with Administrative privileges.
+    If bootMeUp.AdminMode = False Then
 
         ' If the task requires one to run with Admin privileges,
         ' direct the user to do so And complete the action.
@@ -226,7 +228,7 @@ End If
 
 As seen, there are two properties at play here:
 
-- The property `AdministrativeMode` lets you check whether your application is currently being run with Administrative privileges.
+- The property `AdminMode` lets you check whether your application is currently being run with Administrative privileges.
 - The property `Exception` provides error information regarding the failed addition of the program either to the *Registry* or the Windows *Startup* Folder.
 
 The above scenario will help cater for any issues that may be encountered in the process of registering your application for startup. However as indicated before, there are very less likely chances that this may occur as BootMeUp uses a *fail-retry* mode with all its present startup options to ensure that your application is registered to boot once Windows launches.
@@ -235,7 +237,7 @@ The above scenario will help cater for any issues that may be encountered in the
 
 ##### Properties
 
-- `AdministrativeMode`: As discussed earlier, this property lets you check whether your application is currently being run with Administrative privileges.
+- `AdminMode`: As discussed earlier, this property lets you check whether your application is currently being run with Administrative privileges.
 
 - `RunWhenDebugging`: Gets or sets a value indicating whether booting will be enabled or disabled when debugging. This means that when this property is enabled, your application will be registered for startup in your development machine when debugging from Visual Studio. By default, always set it to `false` unless needed.
 
@@ -258,14 +260,17 @@ The above scenario will help cater for any issues that may be encountered in the
 - `KeyExists(TargetUsers targetUser)`: Checks whether the application has a startup key created in the System Registry as per the `targetUser` specified.
 - `KeyVaries()`: Checks whether the application has a startup key that varies with its current location in the System Registry as per the default provided `TargetUser`.
 - `KeyVaries(TargetUsers targetUser)`: Checks whether the application has a startup key that varies with its current location in the System Registry as per the `targetUser` specified.
-- `CreateShortcut()`: Creates a shortcut for the application in the Windows *Startup* folder.
-- `DeleteShortcut()`: Deletes any shortcut created for the application in the Windows *Startup* folder.
+- `CreateShortcut()`: Creates a shortcut for the application in the default target user's *Startup* folder.
+- `CreateShortcut(TargetUsers targetUser)`: Creates a shortcut for the application in any specified target user's *Startup* folder.
+- `DeleteShortcut()`: Deletes any shortcut created for the application in the default target user's *Startup* folder.
+- `DeleteShortcut(TargetUsers targetUser)`: Deletes any shortcut created for the application in any specified target user's *Startup* folder.
 - `ShortcutExists()`: Checks whether the application has an active shortcut link created in the Windows *Startup* folder.
 - `ShortcutVaries()`: Determines whether the available application shortcut points to the current application's location.
+- `ShortcutVaries(TargetUsers targetUser)`: Determines whether the available application shortcut points to the current application's location based on a specified target user's *Startup* folder.
 
 ### Any Extras?
 
-The sample C# project can help you get started. You can easily interact with the library's settings to see how it works:
+The sample C# project that comes with the library can give you an preview of the library in action. You can easily interact with the library's settings to see how it works:
 
 ![bootmeup-options](Assets/bootmeup-options.png)
 

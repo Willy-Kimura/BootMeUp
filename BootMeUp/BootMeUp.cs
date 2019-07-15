@@ -76,11 +76,9 @@ namespace WK.Libraries.BootMeUpNS
 
         #region Fields
 
-        private BootAreas _bootArea;
         private Exception _exception;
         private bool _enabled = false;
         private ContainerControl _containerControl = null;
-        private bool _successful;
         private const string _subKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
 
         #endregion
@@ -248,7 +246,7 @@ namespace WK.Libraries.BootMeUpNS
                     enabled = true;
                 }
                 
-                if (AdministrativeMode)
+                if (AdminMode)
                 {
                     if (KeyExists(TargetUsers.AllUsers) &&
                         !KeyVaries(TargetUsers.AllUsers))
@@ -284,7 +282,7 @@ namespace WK.Libraries.BootMeUpNS
         /// run with Administrative privileges.
         /// </summary>
         [Browsable(false)]
-        public bool AdministrativeMode { get => AdminMode(); }
+        public bool AdminMode { get => AdministrativeMode(); }
 
         /// <summary>
         /// Gets the path to the application shortcut created 
@@ -295,8 +293,20 @@ namespace WK.Libraries.BootMeUpNS
         [Browsable(false)]
         public string ShortcutPath
         {
-            get => $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}" +
-                   $"\\{Application.ProductName}.lnk";
+            get {
+
+                if (TargetUser == TargetUsers.CurrentUser)
+                {
+                    return $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}" +
+                           $"\\{Application.ProductName}.lnk";
+                }
+                else
+                {
+                    return $"{Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}" +
+                           $"\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\\{Application.ProductName}.lnk";
+                }
+
+            }
         }
 
         /// <summary>
@@ -452,11 +462,11 @@ namespace WK.Libraries.BootMeUpNS
                         success = Register(TargetUsers.CurrentUser);
 
                         if (!success)
-                            success = CreateShortcut();
+                            success = CreateShortcut(TargetUsers.CurrentUser);
                     }
                     else
                     {
-                        success = CreateShortcut();
+                        success = CreateShortcut(TargetUsers.CurrentUser);
                     }
                 }
             }
@@ -468,14 +478,14 @@ namespace WK.Libraries.BootMeUpNS
                 {
                     if (TargetUser == TargetUsers.AllUsers)
                     {
-                        success = Register(TargetUsers.CurrentUser);
+                        success = CreateShortcut(TargetUsers.CurrentUser);
 
                         if (!success)
-                            success = CreateShortcut();
+                            Register(TargetUsers.CurrentUser);
                     }
                     else
                     {
-                        success = CreateShortcut();
+                        success = Register(TargetUsers.CurrentUser);
                     }
                 }
             }
@@ -486,8 +496,8 @@ namespace WK.Libraries.BootMeUpNS
         }
 
         /// <summary>
-        /// Unregisters the application based on 
-        /// the default provided settings.
+        /// Unregisters the application from the default 
+        /// provided <see cref="TargetUser"/>.
         /// </summary>
         public bool Unregister()
         {
@@ -519,8 +529,8 @@ namespace WK.Libraries.BootMeUpNS
         }
 
         /// <summary>
-        /// Registers the application based on the target 
-        /// user and the default provided settings.
+        /// Registers the application in any 
+        /// specified target user.
         /// </summary>
         /// <param name="targetUser">
         /// The target user to register with.
@@ -557,8 +567,8 @@ namespace WK.Libraries.BootMeUpNS
         }
 
         /// <summary>
-        /// Registers the application based on the target 
-        /// user and the default provided settings.
+        /// Unregisters the application from 
+        /// any specified target user.
         /// </summary>
         /// <param name="targetUser">
         /// The target user to unregister with.
@@ -697,7 +707,8 @@ namespace WK.Libraries.BootMeUpNS
         #region Shortcut Management
 
         /// <summary>
-        /// Creates a shortcut for the application.
+        /// Creates a shortcut for the application 
+        /// in the default provided <see cref="TargetUser"/>.
         /// </summary>
         public bool CreateShortcut()
         {
@@ -742,6 +753,67 @@ namespace WK.Libraries.BootMeUpNS
         }
 
         /// <summary>
+        /// Creates a shortcut for the application 
+        /// in any specified target user.
+        /// </summary>
+        /// <param name="targetUser">
+        /// The target user to register with.
+        /// </param>
+        public bool CreateShortcut(TargetUsers targetUser)
+        {
+            try
+            {
+                if (!ShortcutExists() || ShortcutVaries())
+                {
+                    string path = ShortcutPath;
+                    string description = Application.ProductName;
+
+                    if (targetUser == TargetUsers.CurrentUser)
+                    {
+                        path = $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}" +
+                               $"\\{Application.ProductName}.lnk";
+                    }
+                    else
+                    {
+                        path = $"{Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}" +
+                               $"\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\\{Application.ProductName}.lnk";
+                    }
+
+                    WshShell shell = new WshShell();
+                    IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(path);
+
+                    Assembly asm = Assembly.GetEntryAssembly();
+                    object[] attributes =
+                        asm.GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
+
+                    if (attributes.Length > 0)
+                    {
+                        var descriptionAttribute =
+                            (AssemblyDescriptionAttribute)attributes[0];
+
+                        description = descriptionAttribute.Description;
+                    }
+
+                    shortcut.WorkingDirectory = Path.GetDirectoryName(path);
+                    shortcut.TargetPath = GetAppPath();
+                    shortcut.Description = description;
+
+                    shortcut.Save();
+
+                    Exception = null;
+                }
+
+                return true;
+            }
+            catch (Exception exception)
+            {
+                Exception = exception;
+
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Deletes any shortcut created for the application.
         /// </summary>
         public bool DeleteShortcut()
@@ -764,19 +836,91 @@ namespace WK.Libraries.BootMeUpNS
         }
 
         /// <summary>
+        /// Deletes any shortcut created for the 
+        /// application from any specified target user.
+        /// </summary>
+        /// <param name="targetUser">
+        /// The target user to unregister with.
+        /// </param>
+        public bool DeleteShortcut(TargetUsers targetUser)
+        {
+            try
+            {
+                string path = ShortcutPath;
+
+                if (targetUser == TargetUsers.CurrentUser)
+                {
+                    path = $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}" +
+                           $"\\{Application.ProductName}.lnk";
+                }
+                else
+                {
+                    path = $"{Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}" +
+                           $"\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\\{Application.ProductName}.lnk";
+                }
+
+                if (ShortcutExists(targetUser))
+                    System.IO.File.Delete(path);
+
+                Exception = null;
+
+                return true;
+            }
+            catch (Exception exception)
+            {
+                Exception = exception;
+
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Checks whether the application has an active 
         /// shortcut link created in the Startup folder.
         /// </summary>
         public bool ShortcutExists()
         {
-            return System.IO.File.Exists(ShortcutPath);
+            if (TargetUser == TargetUsers.CurrentUser)
+            {
+                return System.IO.File.Exists(
+                    $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}" +
+                    $"\\{Application.ProductName}.lnk");
+            }
+            else
+            {
+                return System.IO.File.Exists(
+                    $"{Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}" +
+                    $"\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\\{Application.ProductName}.lnk");
+            }
+        }
+
+        /// <summary>
+        /// Checks whether the application has an active 
+        /// shortcut link created in the Startup folder.
+        /// </summary>
+        /// <param name="targetUser">
+        /// The target user to check with.
+        /// </param>
+        public bool ShortcutExists(TargetUsers targetUser)
+        {
+            if (targetUser == TargetUsers.CurrentUser)
+            {
+                return System.IO.File.Exists(
+                    $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}" +
+                    $"\\{Application.ProductName}.lnk");
+            }
+            else
+            {
+                return System.IO.File.Exists(
+                    $"{Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}" +
+                    $"\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\\{Application.ProductName}.lnk");
+            }
         }
 
         /// <summary>
         /// Determines whether the available application shortcut 
         /// points to the current application's location.
         /// </summary>
-        /// <returns></returns>
         public bool ShortcutVaries()
         {
             if (ShortcutExists())
@@ -792,14 +936,37 @@ namespace WK.Libraries.BootMeUpNS
             }
         }
 
+        /// <summary>
+        /// Determines whether the available application shortcut 
+        /// points to the current application's location.
+        /// </summary>
+        /// <param name="targetUser">
+        /// The target user to check with.
+        /// </param>
+        public bool ShortcutVaries(TargetUsers targetUser)
+        {
+            if (ShortcutExists(targetUser))
+            {
+                if (GetShortcutTarget(GetShortcutPath(targetUser)) != GetAppPath())
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         #endregion
 
         #region Miscellaneous
 
         /// <summary>
-        /// Re-applies the current settings.
+        /// Updates the boot area selected 
+        /// with the the current settings.
         /// </summary>
-        public void Refresh()
+        public void Update()
         {
             Run();
         }
@@ -841,6 +1008,26 @@ namespace WK.Libraries.BootMeUpNS
         }
 
         /// <summary>
+        /// Gets the application's path.
+        /// </summary>
+        /// <param name="targetUser">
+        /// The target user to check with.
+        /// </param>
+        private string GetShortcutPath(TargetUsers targetUser)
+        {
+            if (targetUser == TargetUsers.CurrentUser)
+            {
+                return $"{Environment.GetFolderPath(Environment.SpecialFolder.Startup)}" +
+                       $"\\{Application.ProductName}.lnk";
+            }
+            else
+            {
+                return $"{Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}" +
+                       $"\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\\{Application.ProductName}.lnk";
+            }
+        }
+
+        /// <summary>
         /// Checks the target process launched  
         /// by the available application's shortcut.
         /// </summary>
@@ -853,7 +1040,7 @@ namespace WK.Libraries.BootMeUpNS
         /// Gets the target process launched  
         /// by a specific shortcut file.
         /// </summary>
-        /// <param name="shortcutFile"></param>
+        /// <param name="shortcutFile">A valid path to the shortcut file link.</param>
         /// <returns></returns>
         private string GetShortcutTarget(string shortcutFile)
         {
@@ -920,7 +1107,7 @@ namespace WK.Libraries.BootMeUpNS
         /// being run with Administrative privileges.
         /// </summary>
         /// <returns></returns>
-        public static bool AdminMode()
+        public static bool AdministrativeMode()
         {
             bool isAdmin;
 
@@ -947,7 +1134,11 @@ namespace WK.Libraries.BootMeUpNS
         /// Parses and applies the user-provided 
         /// booting options for the application.
         /// </summary>
-        private void Run(bool loading = false)
+        /// <param name="formLoading">
+        /// Is the method being called in the 
+        /// parent form's Load event.
+        /// </param>
+        private void Run(bool formLoading = false)
         {
             if (!DesignMode || RunWhenDebugging)
             {
@@ -957,7 +1148,7 @@ namespace WK.Libraries.BootMeUpNS
                 }
                 else
                 {
-                    if (!loading)
+                    if (!formLoading)
                         Unregister();
                 }
             }

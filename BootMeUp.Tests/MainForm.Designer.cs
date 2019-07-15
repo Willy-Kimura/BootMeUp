@@ -73,9 +73,9 @@
             // 
             // btnAbout
             // 
-            this.btnAbout.Location = new System.Drawing.Point(302, 5);
+            this.btnAbout.Location = new System.Drawing.Point(307, 6);
             this.btnAbout.Name = "btnAbout";
-            this.btnAbout.Size = new System.Drawing.Size(32, 31);
+            this.btnAbout.Size = new System.Drawing.Size(25, 23);
             this.btnAbout.TabIndex = 8;
             this.btnAbout.Text = "?";
             this.toolTip1.SetToolTip(this.btnAbout, "About BootMeUp");
