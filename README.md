@@ -7,8 +7,6 @@
 
 # Installation 
 
-*(NuGet deployment in progress...)* 
-
 To install via the [NuGet Package Manager](https://www.nuget.org/packages/BootMeUp/) Console, run:
 
 > `Install-Package BootMeUp`
