@@ -3,13 +3,13 @@
  * Library      : BootMeUp
  * License      : MIT
  * 
- * 'BootMeUp' is a library that was inspired by the need for.NET 
- * developers to have a one-stop solution when it comes to 
- * automatic launching of their applications at system startup.
+ * BootMeUp is a library that was inspired by the need for .NET 
+ * developers to have an easier one-stop solution when it comes to 
+ * automatic launching of their applications at system startup. 
  * Having come across a number of SO (StackOverflow) questions 
  * regarding this topic or revolving around it together with 
  * the many decentralized, undocumented and standalone ways 
- * of incorporating this feature, I saw the desperate of many
+ * of incorporating this feature, I saw the desperate of many 
  * and so took to building an all-inclusive library that 
  * caters for 'all-things-startup' in .NET applications. 
  * So I built this nifty little library does just that and 
@@ -35,13 +35,13 @@ namespace WK.Libraries.BootMeUpNS
 {
     /// <summary>
     /// A library that provides automatic startup for .NET 
-    /// applications at system boot-time while providing 
+    /// applications at system-boot while providing 
     /// additional startup management options.
     /// </summary>
     [DefaultProperty("BootArea")]
     [Designer(typeof(WKDesigner))]
     [Description("A .NET library that provides automatic startup for " +
-                 "applications at system boot-time while providing " +
+                 "applications at system-boot while providing " +
                  "additional startup management options.")]
     public partial class BootMeUp : Component
     {
@@ -625,6 +625,44 @@ namespace WK.Libraries.BootMeUpNS
 
         /// <summary>
         /// Checks whether the application has a startup 
+        /// key created in the System Registry.
+        /// </summary>
+        /// <param name="targetUser">
+        /// The user registry to check.
+        /// </param>
+        public bool KeyExists(TargetUsers targetUser)
+        {
+            try
+            {
+                string path = string.Empty;
+                string name = GetAppName();
+
+                RegistryKey key = null;
+
+                if (targetUser == TargetUsers.CurrentUser)
+                    key = Registry.CurrentUser.OpenSubKey(_subKey, true);
+                else if (targetUser == TargetUsers.AllUsers)
+                    Registry.LocalMachine.OpenSubKey(_subKey, true);
+
+                using (key)
+                {
+                    if (key.GetValue(name) != null)
+                        path = key.GetValue(name).ToString().ToLower().Replace("\"", "");
+
+                    if (path == GetAppPath().ToLower())
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Checks whether the application has a startup 
         /// key that varies with its current location in 
         /// the System Registry as per the 
         /// <see cref="TargetUser"/> specified.
@@ -662,44 +700,6 @@ namespace WK.Libraries.BootMeUpNS
                         path = key.GetValue(name).ToString().ToLower().Replace("\"", "");
 
                     if (path != GetAppPath().ToLower())
-                        return true;
-                    else
-                        return false;
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Checks whether the application has a startup 
-        /// key created in the System Registry.
-        /// </summary>
-        /// <param name="targetUser">
-        /// The user registry to check.
-        /// </param>
-        public bool KeyExists(TargetUsers targetUser)
-        {
-            try
-            {
-                string path = string.Empty;
-                string name = GetAppName();
-
-                RegistryKey key = null;
-
-                if (targetUser == TargetUsers.CurrentUser)
-                    key = Registry.CurrentUser.OpenSubKey(_subKey, true);
-                else if (targetUser == TargetUsers.AllUsers)
-                    Registry.LocalMachine.OpenSubKey(_subKey, true);
-
-                using (key)
-                {
-                    if (key.GetValue(name) != null)
-                        path = key.GetValue(name).ToString().ToLower().Replace("\"", "");
-
-                    if (path == GetAppPath().ToLower())
                         return true;
                     else
                         return false;
@@ -997,7 +997,7 @@ namespace WK.Libraries.BootMeUpNS
             }
             catch (Exception) { }
         }
-        
+
         /// <summary>
         /// Gets the application's name.
         /// </summary>

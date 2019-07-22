@@ -94,7 +94,6 @@ namespace Tests
             MessageBox.Show("BootMeUp is a .NET library that enables automatic startups for " +
                             "applications at system boot-time while providing additional " +
                             "startup management options.\n\n" +
-                            "License: MIT \n\n" +
                             "Copyright © 2019, Willy Kimura.", "About BootMeUp", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
