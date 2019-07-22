@@ -102,7 +102,7 @@ namespace WK.Libraries.BootMeUpNS
         }
 
         /// <summary>
-        /// Provides the two standard user options supported
+        /// Provides the two standard user options supported 
         /// when registering an application for booting.
         /// </summary>
         public enum TargetUsers
@@ -291,7 +291,32 @@ namespace WK.Libraries.BootMeUpNS
         /// run with Administrative privileges.
         /// </summary>
         [Browsable(false)]
-        public bool AdminMode { get => AdministrativeMode(); }
+        public bool AdminMode
+        {
+            get {
+
+                bool isAdmin;
+
+                try
+                {
+                    WindowsIdentity user = WindowsIdentity.GetCurrent();
+                    WindowsPrincipal principal = new WindowsPrincipal(user);
+
+                    isAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    isAdmin = false;
+                }
+                catch (Exception)
+                {
+                    isAdmin = false;
+                }
+
+                return isAdmin;
+
+            }
+        }
 
         /// <summary>
         /// Gets the path to the application shortcut created 
@@ -1109,34 +1134,6 @@ namespace WK.Libraries.BootMeUpNS
             {
                 return "";
             }
-        }
-
-        /// <summary>
-        /// Determines whether the application is 
-        /// being run with Administrative privileges.
-        /// </summary>
-        /// <returns></returns>
-        public static bool AdministrativeMode()
-        {
-            bool isAdmin;
-
-            try
-            {
-                WindowsIdentity user = WindowsIdentity.GetCurrent();
-                WindowsPrincipal principal = new WindowsPrincipal(user);
-
-                isAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
-            }
-            catch (UnauthorizedAccessException)
-            {
-                isAdmin = false;
-            }
-            catch (Exception)
-            {
-                isAdmin = false;
-            }
-
-            return isAdmin;
         }
 
         /// <summary>
