@@ -276,4 +276,4 @@ The sample C# project that comes with the library can give you an preview of the
 
 Have fun!
 
-*Made with* 😊 *by* [*Willy Kimura*]([https://github.com/Willy-Kimura)
+*Made with* 😊 *by* [*Willy Kimura*]([https://github.com/Willy-Kimura).
