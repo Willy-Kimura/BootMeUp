@@ -276,4 +276,8 @@ The sample C# project that comes with the library can give you an preview of the
 
 Have fun!
 
+### Donate
+
+If you really like my projects and want to support me, consider donating to me via [BuyMeACoffee](https://www.buymeacoffee.com/willykimura). All donations are optional and are greatly appreciated. 🙏
+
 *Made with* 😊 *by* [*Willy Kimura*]([https://github.com/Willy-Kimura).
