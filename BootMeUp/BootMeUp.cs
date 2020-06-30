@@ -1,5 +1,7 @@
-﻿/*
- * Developer    : Willy Kimura (WK)
+﻿#region Copyright
+
+/*
+ * Developer    : Willy Kimura
  * Library      : BootMeUp
  * License      : MIT
  * 
@@ -19,6 +21,8 @@
  * 
  */
 
+#endregion
+
 
 using System;
 using System.IO;
@@ -34,15 +38,13 @@ using System.ComponentModel.Design;
 namespace WK.Libraries.BootMeUpNS
 {
     /// <summary>
-    /// A library that provides automatic startup for .NET 
-    /// applications at system-boot while providing 
-    /// additional startup management options.
+    /// A library that provides automatic startup for applications at system 
+    /// boot time while providing additional startup management options.
     /// </summary>
     [DefaultProperty("BootArea")]
     [Designer(typeof(WKDesigner))]
-    [Description("A .NET library that provides automatic startup for " +
-                 "applications at system-boot while providing " +
-                 "additional startup management options.")]
+    [Description("A library that enables automatic startup for applications at system " +
+                 "boot time while providing additional startup management options.")]
     public partial class BootMeUp : Component
     {
         #region Constructor

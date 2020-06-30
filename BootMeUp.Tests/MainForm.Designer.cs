@@ -73,9 +73,11 @@
             // 
             // btnAbout
             // 
-            this.btnAbout.Location = new System.Drawing.Point(307, 6);
+            this.btnAbout.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnAbout.ForeColor = System.Drawing.Color.Black;
+            this.btnAbout.Location = new System.Drawing.Point(308, 6);
             this.btnAbout.Name = "btnAbout";
-            this.btnAbout.Size = new System.Drawing.Size(25, 23);
+            this.btnAbout.Size = new System.Drawing.Size(24, 23);
             this.btnAbout.TabIndex = 8;
             this.btnAbout.Text = "?";
             this.toolTip1.SetToolTip(this.btnAbout, "About BootMeUp");
@@ -156,13 +158,13 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.label3.ForeColor = System.Drawing.Color.DimGray;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.label3.ForeColor = System.Drawing.Color.Gray;
             this.label3.Location = new System.Drawing.Point(17, 318);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(216, 15);
+            this.label3.Size = new System.Drawing.Size(206, 15);
             this.label3.TabIndex = 15;
-            this.label3.Text = "Specify the target user to register with...";
+            this.label3.Text = "Specify the target user to register with";
             // 
             // label4
             // 
@@ -178,13 +180,13 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.label2.ForeColor = System.Drawing.Color.DimGray;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.label2.ForeColor = System.Drawing.Color.Gray;
             this.label2.Location = new System.Drawing.Point(17, 244);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(197, 15);
+            this.label2.Size = new System.Drawing.Size(200, 15);
             this.label2.TabIndex = 13;
-            this.label2.Text = "Specify the boot area to register in...";
+            this.label2.Text = "Specify the boot area to register with";
             // 
             // label1
             // 
@@ -232,14 +234,14 @@
             // lblObservableImagesDesc
             // 
             this.lblObservableImagesDesc.AutoSize = true;
-            this.lblObservableImagesDesc.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.lblObservableImagesDesc.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblObservableImagesDesc.ForeColor = System.Drawing.Color.Gray;
             this.lblObservableImagesDesc.Location = new System.Drawing.Point(33, 148);
             this.lblObservableImagesDesc.Name = "lblObservableImagesDesc";
-            this.lblObservableImagesDesc.Size = new System.Drawing.Size(179, 60);
+            this.lblObservableImagesDesc.Size = new System.Drawing.Size(178, 60);
             this.lblObservableImagesDesc.TabIndex = 9;
             this.lblObservableImagesDesc.Text = "When set to true, the alternative \r\nbooting area will be used when \r\nthe default " +
-    "booting area fails in \r\nregistering the application.";
+    "booting area fails to \r\nregister the application.";
             // 
             // chkUseAlternativeOnFail
             // 
@@ -259,14 +261,14 @@
             // lblObservableTextsDesc
             // 
             this.lblObservableTextsDesc.AutoSize = true;
-            this.lblObservableTextsDesc.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.lblObservableTextsDesc.ForeColor = System.Drawing.Color.DimGray;
+            this.lblObservableTextsDesc.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblObservableTextsDesc.ForeColor = System.Drawing.Color.Gray;
             this.lblObservableTextsDesc.Location = new System.Drawing.Point(33, 54);
             this.lblObservableTextsDesc.Name = "lblObservableTextsDesc";
             this.lblObservableTextsDesc.Size = new System.Drawing.Size(181, 60);
             this.lblObservableTextsDesc.TabIndex = 7;
             this.lblObservableTextsDesc.Text = "Enable automatic booting of the \r\napplication? When unchecked, \r\nthe application " +
-    "will be removed \r\nfrom the default registry area.";
+    "will be removed \r\nfrom the default booting area.";
             // 
             // chkEnableBooting
             // 
@@ -301,7 +303,7 @@
             this.Controls.Add(this.panel1);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "BootMeUp: Tests";
+            this.Text = "BootMeUp Tests";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
