@@ -1,5 +1,5 @@
 # BootMeUp
-[![bootmeup-nuget](https://img.shields.io/badge/NuGet-1.0.0-brightgreen.svg)](https://www.nuget.org/packages/BootMeUp/) [![wk-donate](https://img.shields.io/badge/BuyMeACoffee-Donate-orange.svg)](https://www.buymeacoffee.com/willykimura)
+[![nuget-downloads](https://img.shields.io/nuget/dt/BootMeUp?label=Downloads)](https://www.nuget.org/packages/BootMeUp/) [![wk-donate](https://img.shields.io/badge/BuyMeACoffee-Donate-orange.svg)](https://www.buymeacoffee.com/willykimura)
 
 **BootMeUp** is a .NET library that provides automatic startup for .NET applications at system-boot while providing additional startup management options.
 
