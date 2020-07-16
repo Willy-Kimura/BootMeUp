@@ -140,7 +140,7 @@ namespace WK.Libraries.BootMeUpNS
         [ParenthesizePropertyName(true)]
         [Description("Sets a value indicating whether automatic " +
                      "booting of the application is enabled.")]
-        public bool Enabled
+        public virtual bool Enabled
         {
             get {
 
@@ -188,7 +188,7 @@ namespace WK.Libraries.BootMeUpNS
         [Description("When set to true, the alternative booting " +
                      "area will be used when the default booting " +
                      "area fails in registering the application.")]
-        public bool UseAlternativeOnFail { get; set; } = true;
+        public virtual bool UseAlternativeOnFail { get; set; } = true;
 
         /// <summary>
         /// Gets or sets the boot area where the application 
@@ -197,7 +197,7 @@ namespace WK.Libraries.BootMeUpNS
         [Category("Booting Options")]
         [Description("Sets the boot area where the application " +
                      "will be registered for startup/booting.")]
-        public BootAreas BootArea { get; set; } = BootAreas.Registry;
+        public virtual BootAreas BootArea { get; set; } = BootAreas.Registry;
 
         /// <summary>
         /// Gets or sets the target user to be used when
@@ -213,7 +213,7 @@ namespace WK.Libraries.BootMeUpNS
                      "option 'AllUsers' may require you to have the necessary " +
                      "Administrative privileges to successfully complete " +
                      "registering the application for startup with all users.")]
-        public TargetUsers TargetUser { get; set; } = TargetUsers.CurrentUser;
+        public virtual TargetUsers TargetUser { get; set; } = TargetUsers.CurrentUser;
 
         /// <summary>
         /// Gets or sets the object that contains programmer-
@@ -236,7 +236,7 @@ namespace WK.Libraries.BootMeUpNS
         /// supported booting areas within the system.
         /// </summary>
         [Browsable(false)]
-        public bool IsEnabledFromAnywhere
+        public virtual bool IsEnabledFromAnywhere
         {
             get {
 
@@ -279,21 +279,21 @@ namespace WK.Libraries.BootMeUpNS
         /// for the application was enabled or disabled successfully.
         /// </summary>
         [Browsable(false)]
-        public bool Successful { get; private set; }
+        public virtual bool Successful { get; private set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether booting 
         /// will be enabled or disabled when debugging.
         /// </summary>
         [Browsable(false)]
-        public bool RunWhenDebugging { get; set; } = false;
+        public virtual bool RunWhenDebugging { get; set; } = false;
 
         /// <summary>
         /// Determines whether the application is being 
         /// run with Administrative privileges.
         /// </summary>
         [Browsable(false)]
-        public bool AdminMode
+        public virtual bool AdminMode
         {
             get {
 
@@ -327,7 +327,7 @@ namespace WK.Libraries.BootMeUpNS
         /// <see cref="BootAreas.StartupFolder"/>.
         /// </summary>
         [Browsable(false)]
-        public string ShortcutPath
+        public virtual string ShortcutPath
         {
             get {
 
@@ -350,7 +350,7 @@ namespace WK.Libraries.BootMeUpNS
         /// application's boot registering or unregistering process.
         /// </summary>
         [Browsable(false)]
-        public Exception Exception
+        public virtual Exception Exception
         {
             get {
 
@@ -374,7 +374,7 @@ namespace WK.Libraries.BootMeUpNS
         /// Gets or sets the parent form.
         /// </summary>
         [Browsable(false)]
-        public Form ParentForm
+        public virtual Form ParentForm
         {
             get {
 
