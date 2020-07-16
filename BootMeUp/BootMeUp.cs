@@ -78,6 +78,7 @@ namespace WK.Libraries.BootMeUpNS
 
         #region Fields
 
+        private string _parameters;
         private Exception _exception;
         private bool _enabled = false;
         private ContainerControl _containerControl = null;
@@ -136,7 +137,7 @@ namespace WK.Libraries.BootMeUpNS
         /// Gets or sets a value indicating whether automatic 
         /// booting of the application is enabled.
         /// </summary>
-        [Category("Booting Options")]
+        [Category("Boot Options")]
         [ParenthesizePropertyName(true)]
         [Description("Sets a value indicating whether automatic " +
                      "booting of the application is enabled.")]
@@ -184,17 +185,39 @@ namespace WK.Libraries.BootMeUpNS
         /// be used when the default booting area fails in 
         /// registering the application.
         /// </summary>
-        [Category("Booting Options")]
+        [Category("Boot Options")]
         [Description("When set to true, the alternative booting " +
                      "area will be used when the default booting " +
                      "area fails in registering the application.")]
         public virtual bool UseAlternativeOnFail { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets the launch parameter(s)  
+        /// used when booting the application.
+        /// </summary>
+        [Category("Boot Options")]
+        [Description("Sets the launch parameter(s) used " +
+                     "when booting the application.")]
+        public virtual string Parameters
+        {
+            get
+            {
+                // Let's verify whether any key exists.
+                // In the event of a key being found, the
+                // registered parameters will be copied 
+                // to the '_parameters' variable.
+                KeyExists();
+
+                return _parameters;
+            }
+            set => _parameters = value;
+        }
+
+        /// <summary>
         /// Gets or sets the boot area where the application 
         /// will be registered for startup/booting.
         /// </summary>
-        [Category("Booting Options")]
+        [Category("Boot Options")]
         [Description("Sets the boot area where the application " +
                      "will be registered for startup/booting.")]
         public virtual BootAreas BootArea { get; set; } = BootAreas.Registry;
@@ -207,7 +230,7 @@ namespace WK.Libraries.BootMeUpNS
         /// to successfully complete registering the application 
         /// for startup with all users.
         /// </summary>
-        [Category("Booting Options")]
+        [Category("Boot Options")]
         [Description("Sets the target user to be used when registering the " +
                      "application for startup. Please note that setting the " +
                      "option 'AllUsers' may require you to have the necessary " +
@@ -586,7 +609,7 @@ namespace WK.Libraries.BootMeUpNS
 
                     using (key)
                     {
-                        key.SetValue(GetAppName(), "\"" + GetAppPath() + "\"");
+                        key.SetValue(GetAppName(), "\"" + GetAppPath() + $"\" {Parameters}");
                     }
                 }
 
@@ -674,7 +697,29 @@ namespace WK.Libraries.BootMeUpNS
                 using (key)
                 {
                     if (key.GetValue(name) != null)
-                        path = key.GetValue(name).ToString().ToLower().Replace("\"", "");
+                    {
+                        string[] pathVariables = key.GetValue(name).ToString().ToLower().Split('"');
+
+                        /*
+                         * Quick Guide On 'pathVariables':
+                         * 
+                         * 1. pathVariables[0]: Is the first delimited section and has no data.
+                         * 2. pathVariables[1]: Is the second section and contains the app's path.
+                         * 3. pathVariables[2]: Is the last section and contains the app's launch params.
+                         * 
+                         */
+
+                        path = pathVariables[1];
+
+                        if (!string.IsNullOrEmpty(pathVariables[2]))
+                        {
+                            // Clean launch parameters.
+                            pathVariables[2] = pathVariables[2].Remove(0, 1);
+
+                            // Assign launch parameters to '_parameters' variable.
+                            _parameters = pathVariables[2];
+                        }
+                    }
 
                     if (path == GetAppPath().ToLower())
                         return true;
@@ -724,7 +769,20 @@ namespace WK.Libraries.BootMeUpNS
                 using (key)
                 {
                     if (key.GetValue(name) != null)
-                        path = key.GetValue(name).ToString().ToLower().Replace("\"", "");
+                    {
+                        string[] pathVariables = key.GetValue(name).ToString().ToLower().Split('"');
+
+                        /*
+                         * Quick Guide On 'pathVariables':
+                         * 
+                         * 1. pathVariables[0]: Is the first delimited section and has no data.
+                         * 2. pathVariables[1]: Is the second section and hosts the app's path.
+                         * 3. pathVariables[2]: Is the last section and hosts the app's launch params.
+                         * 
+                         */
+
+                        path = pathVariables[1];
+                    }
 
                     if (path != GetAppPath().ToLower())
                         return true;

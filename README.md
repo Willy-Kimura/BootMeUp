@@ -1,9 +1,9 @@
 # BootMeUp
 [![nuget-downloads](https://img.shields.io/nuget/dt/BootMeUp?label=Downloads)](https://www.nuget.org/packages/BootMeUp/) [![wk-donate](https://img.shields.io/badge/BuyMeACoffee-Donate-orange.svg)](https://www.buymeacoffee.com/willykimura)
 
-**BootMeUp** is a .NET library that provides automatic startup for .NET applications at system-boot while providing additional startup management options.
-
 ![bootmeup-logo](Assets/bootmeup-logo.png)
+
+**BootMeUp** is a .NET library that provides automatic startup for .NET applications at system-boot while providing additional startup management options.
 
 # Installation 
 
@@ -14,12 +14,13 @@ To install via the [NuGet Package Manager](https://www.nuget.org/packages/BootMe
 # Features
 - Built as a component making it accessible in Design Mode.
 - Supports [.NET Framework 4.0](https://www.microsoft.com/en-us/download/details.aspx?id=17718) and higher.
-- Provides support for the major Windows application startup areas: the *Registry* and the *Startup Folder*.
-- Auto-checks whether the application was moved from its original location and updates the registry or shortcut existing appropriately.
-- Seamless registering/unregistering of your applications from the supported startup areas.
-- Ability to register your applications in the *current user* (default) domain or *all users* domain (requires Administrative privileges).
-- Uses alternative method of registering your applications if the default fails, giving you 100% confidence when deploying your applications whenever automatic startup is enabled.
-- Includes additional properties and methods that help you manage application startups.
+- Supports the main Windows startup areas: the *Registry* and the *Startup Folder*.
+- Simplified registering/unregistering of applications from the supported startup areas.
+- Verifies whether an application has been moved from its original location and updates the registry or existing shortcut appropriately.
+- Can register applications in the **Current User** (default) domain or **All Users** domain (requires Admin privileges).
+- Provides support for startup parameters when launching an application.
+- Uses alternative method of registration if the default fails, giving you 100% confidence when deploying your applications while automatic startup is enabled.
+- Includes additional properties and methods to help manage application startups.
 
 # Usage
 ### Working in Design Mode
