@@ -13,11 +13,11 @@ To install via the [NuGet Package Manager](https://www.nuget.org/packages/BootMe
 
 # Features
 - Built as a component making it accessible in Design Mode.
-- Supports [.NET Framework 4.0](https://www.microsoft.com/en-us/download/details.aspx?id=17718) and higher.
+- Supports [.NET Framework 2.0](https://www.microsoft.com/en-us/download/details.aspx?id=17718) and higher.
 - Supports the main Windows startup areas: the *Registry* and the *Startup Folder*.
 - Simplified registering/unregistering of applications from the supported startup areas.
 - Verifies whether an application has been moved from its original location and updates the registry or existing shortcut appropriately.
-- Can register applications in the **Current User** (default) domain or **All Users** domain (requires Admin privileges).
+- Can register applications in the **Current User** (default) domain and **All Users** domain (requires Admin privileges).
 - Provides support for startup parameters when launching an application.
 - Uses alternative method of registration if the default fails, giving you 100% confidence when deploying your applications while automatic startup is enabled.
 - Includes additional properties and methods to help manage application startups.
