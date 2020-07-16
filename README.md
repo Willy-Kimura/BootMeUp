@@ -28,7 +28,7 @@ If you prefer working with the Designer, once you've installed the package, go t
 
 You can then use the *Properties* window to change its options:
 
-![bootmeup-properties](Assets/bootmeup-properties.png)
+![bootmeup-properties](Assets/bootmeup-properties-2.png)
 
 Once done, you're good to go! BootMeUp will take care of the rest.
 
